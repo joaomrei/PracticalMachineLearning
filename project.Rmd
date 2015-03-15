@@ -1,0 +1,111 @@
+---
+title: "Practical Machine Learning - Project"
+author: "Joao Rei"
+date: "Sunday, March 15, 2015"
+output: html_document
+---
+
+# Executive Summary
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. 
+In this project, the goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways.The objective is to predict the manner in which they did the exercise. This is the "classe" variable in the training set.
+
+
+# Getting and Cleaning Data
+
+The training data for this project are available here: 
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+The test data are available here: 
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+
+Both were manually downloaded and placed in the working directory.
+
+
+```{r echo=FALSE}
+setwd("C:/DISCO_D/ORGANIZADO/Coursera/__Coursera/08_Data Science Specialization/08_Practical Machine Learning/PROJECT")
+
+```
+
+The training and testing data were then loaded to R. The first 7 columns of the datasets were removed because they dont have any prediction value.
+Any column with NAs was also removed.
+The training dataset was also split to build a verification dataset (30% of data from training).
+
+
+```{r}
+library(caret)
+
+training = read.csv("pml-training.csv", na.strings=c("NA",""))
+testing = read.csv("pml-testing.csv",na.strings=c("NA",""))
+
+training = training[,8:length(training)]
+testing = testing[,8:length(testing)]
+
+training_NAs <- apply(training, 2, function(x) {sum(is.na(x))})
+testing_NAs <- apply(testing, 2, function(x) {sum(is.na(x))})
+
+training = training[,which(training_NAs == 0)]
+testing = testing[,which(training_NAs == 0)]
+
+inTrain <- createDataPartition(training$classe, p=0.70, list=FALSE)
+training <- training[inTrain,]
+validation <- training[-inTrain,]
+
+```
+
+
+# Model
+
+For this prediction a RandomForest model was choosen. Caret library was used to fit the model. Accuracy was used to select the optimal model using  the largest value.
+The final value used for the model was mtry = 27.
+This Accuracy was calculated using Resampling Cross-Validated.
+
+
+```{r cache=TRUE}
+
+traincontrol <- trainControl(method = "cv", number = 5)
+model = train(classe ~ . ,data=training, method="rf",trControl=traincontrol)
+
+```
+
+# Out of Sample Error
+
+Accuracy of 0.9963 or a small 0.37% out of sample error was calculated from the validation data.
+
+
+```{r}
+model
+pred = predict(model, validation)
+confusionMatrix(pred, validation$classe)
+
+```
+
+
+# Prediction
+
+The rf model was then used to predict 20 test cases.
+The testing dataset had a feature problem_id that was removed before running predict function.
+
+```{r}
+
+testing2 = testing
+testing2$problem_id = NULL
+testing2$classe = rep("A",20)
+
+test_prediction = predict(model, testing2)
+
+str(test_prediction)
+
+
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+pml_write_files(test_prediction)
+
+
+```
+
+
