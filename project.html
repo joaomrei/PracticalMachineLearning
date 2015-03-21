@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Practical Machine Learning - Project</h1>
 <h4 class="author"><em>Joao Rei</em></h4>
-<h4 class="date"><em>Sunday, March 15, 2015</em></h4>
+<h4 class="date"><em>Sunday, March 20, 2015</em></h4>
 </div>
 
 
@@ -73,7 +73,7 @@ img {
 </div>
 <div id="getting-and-cleaning-data" class="section level1">
 <h1>Getting and Cleaning Data</h1>
-<p>The training data for this project are available here: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a> The test data are available here: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></p>
+<p>The training data for this project is available here: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a> The test data is available here: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></p>
 <p>Both were manually downloaded and placed in the working directory.</p>
 <p>The training and testing data were then loaded to R. The first 7 columns of the datasets were removed because they dont have any prediction value. Any column with NAs was also removed. The training dataset was also split to build a verification dataset (30% of data from training).</p>
 <pre class="r"><code>library(caret)</code></pre>
@@ -108,7 +108,7 @@ model = train(classe ~ . ,data=training, method=&quot;rf&quot;,trControl=trainco
 </div>
 <div id="out-of-sample-error" class="section level1">
 <h1>Out of Sample Error</h1>
-<p>Accuracy of 0.9963 or a small 0.37% out of sample error was calculated from the validation data.</p>
+<p>Accuracy of 0.9914102 or a small 0.86% out of sample error was calculated from Resampling Cross-Validated, (mtry=27). Out of Sample from validation data was also calculated, with Accuracy = 0.9973 or 0.37% out of sample error.</p>
 <pre class="r"><code>model</code></pre>
 <pre><code>## Random Forest 
 ## 
@@ -140,17 +140,17 @@ model = train(classe ~ . ,data=training, method=&quot;rf&quot;,trControl=trainco
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1164    1    0    0    0
-##          B    0  799    3    0    0
-##          C    0    2  727    3    0
-##          D    0    0    1  655    1
-##          E    0    0    0    0  761
+##          A 1157    3    0    0    0
+##          B    0  798    1    1    0
+##          C    0    0  726    3    1
+##          D    0    0    1  661    1
+##          E    0    0    0    0  763
 ## 
 ## Overall Statistics
 ##                                           
 ##                Accuracy : 0.9973          
 ##                  95% CI : (0.9952, 0.9987)
-##     No Information Rate : 0.2827          
+##     No Information Rate : 0.2811          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
 ##                   Kappa : 0.9966          
@@ -159,14 +159,14 @@ model = train(classe ~ . ,data=training, method=&quot;rf&quot;,trControl=trainco
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            1.0000   0.9963   0.9945   0.9954   0.9987
-## Specificity            0.9997   0.9991   0.9985   0.9994   1.0000
-## Pos Pred Value         0.9991   0.9963   0.9932   0.9970   1.0000
-## Neg Pred Value         1.0000   0.9991   0.9988   0.9991   0.9997
-## Prevalence             0.2827   0.1948   0.1776   0.1598   0.1851
-## Detection Rate         0.2827   0.1941   0.1766   0.1591   0.1848
-## Detection Prevalence   0.2830   0.1948   0.1778   0.1596   0.1848
-## Balanced Accuracy      0.9998   0.9977   0.9965   0.9974   0.9993</code></pre>
+## Sensitivity            1.0000   0.9963   0.9973   0.9940   0.9974
+## Specificity            0.9990   0.9994   0.9988   0.9994   1.0000
+## Pos Pred Value         0.9974   0.9975   0.9945   0.9970   1.0000
+## Neg Pred Value         1.0000   0.9991   0.9994   0.9988   0.9994
+## Prevalence             0.2811   0.1946   0.1769   0.1616   0.1859
+## Detection Rate         0.2811   0.1939   0.1764   0.1606   0.1854
+## Detection Prevalence   0.2818   0.1944   0.1774   0.1611   0.1854
+## Balanced Accuracy      0.9995   0.9978   0.9980   0.9967   0.9987</code></pre>
 </div>
 <div id="prediction" class="section level1">
 <h1>Prediction</h1>

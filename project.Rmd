@@ -1,7 +1,7 @@
 ---
 title: "Practical Machine Learning - Project"
 author: "Joao Rei"
-date: "Sunday, March 15, 2015"
+date: "Sunday, March 20, 2015"
 output: html_document
 ---
 
@@ -13,9 +13,9 @@ In this project, the goal will be to use data from accelerometers on the belt, f
 
 # Getting and Cleaning Data
 
-The training data for this project are available here: 
+The training data for this project is available here: 
 https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
-The test data are available here: 
+The test data is available here: 
 https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
 
 Both were manually downloaded and placed in the working directory.
@@ -69,7 +69,9 @@ model = train(classe ~ . ,data=training, method="rf",trControl=traincontrol)
 
 # Out of Sample Error
 
-Accuracy of 0.9963 or a small 0.37% out of sample error was calculated from the validation data.
+Accuracy of 0.9914102 or a small 0.86% out of sample error was calculated from 
+Resampling Cross-Validated, (mtry=27).
+Out of Sample from validation data was also calculated, with Accuracy = 0.9973 or 0.37% out of sample error.
 
 
 ```{r}
