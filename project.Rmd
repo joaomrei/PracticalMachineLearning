@@ -71,7 +71,7 @@ model = train(classe ~ . ,data=training, method="rf",trControl=traincontrol)
 
 Accuracy of 0.9914102 or a small 0.86% out of sample error was calculated from 
 Resampling Cross-Validated, (mtry=27).
-Out of Sample from validation data was also calculated, with Accuracy = 0.9973 or 0.37% out of sample error.
+Out of Sample from validation data was also calculated, with Accuracy = 0.9973 or 0.27% out of sample error.
 
 
 ```{r}
